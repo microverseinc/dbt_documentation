@@ -1,34 +1,25 @@
 # dbt coding conventions
 
 ## Model Naming
-Our models (typically) fit into three main categories: staging, marts, base/intermediate. The file and naming structures are as follows:
+Our models (typically) fit into two main categories: staging and final.
+The file and naming structures are as follows:
 ```
 ├── dbt_project.yml
 └── models
-    ├── marts
-    |   └── core
-    |       ├── intermediate
-    |       |   ├── intermediate.yml
-    |       |   ├── customers__unioned.sql
-    |       |   ├── customers__grouped.sql
-    |       └── core.yml
-    |       └── core.docs
-    |       └── dim_customers.sql
-    |       └── fct_orders.sql
-    └── staging
-        └── stripe
-            ├── base
-            |   ├── base__stripe_invoices.sql
-            ├── src_stripe.yml
-            ├── src_stripe.docs
-            ├── stg_stripe.yml
-            ├── stg_stripe__customers.sql
-            └── stg_stripe__invoices.sql
+    ├── core
+        ├── stg
+            ├── schema.yml
+            └── stg_students_sum.sql
+        ├── schema.yml
+        └── students.sql
+    └── metrics
+        ├── stg
+            ├── schema.yml
+            └── stg_students_count.sql
+        ├── schema.yml
+        └── students_metrics.sql
 ```
-- All objects should be plural, such as: `stg_stripe__invoices`
-- Base tables are prefixed with `base__`, such as: `base__<source>_<object>`
-- Intermediate tables should end with a past tense verb indicating the action performed on the object, such as: `customers__unioned`
-- Marts are categorized between fact (immutable, verbs) and dimensions (mutable, nouns) with a prefix that indicates either, such as: `fct_orders` or `dim_customers`
+- All objects should be plural, such as: `students_metrics`
 
 ## Model configuration
 
@@ -45,7 +36,6 @@ Our models (typically) fit into three main categories: staging, marts, base/inte
   )
 }}
 ```
-- Marts should always be configured as tables
 
 ## dbt conventions
 * Only `stg_` models (or `base_` models if your project requires them) should select from `source`s.
